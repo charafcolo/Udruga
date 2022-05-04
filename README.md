@@ -32,3 +32,4 @@ WAHIB JOUIDIR AKA SHANG-CHI
 ```
 
 ![](back-udruga.png)
+img src: allocine & fandom
