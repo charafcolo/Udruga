@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,27 @@ class User
      * @ORM\Column(type="string", length=64)
      */
     private $role;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="users")
+     */
+    private $events;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Association::class, inversedBy="admin", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $association;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Association::class, inversedBy="members")
+     */
+    private $associationMember;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +143,57 @@ class User
     public function setRole(string $role): self
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getAssociation(): ?Association
+    {
+        return $this->association;
+    }
+
+    public function setAssociation(Association $association): self
+    {
+        $this->association = $association;
+
+        return $this;
+    }
+
+    public function getAssociationMember(): ?Association
+    {
+        return $this->associationMember;
+    }
+
+    public function setAssociationMember(?Association $associationMember): self
+    {
+        $this->associationMember = $associationMember;
 
         return $this;
     }

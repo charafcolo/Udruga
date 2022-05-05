@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AssociationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,27 @@ class Association
      * @ORM\Column(type="integer")
      */
     private $registrationCode;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="association", orphanRemoval=true)
+     */
+    private $events;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="association", cascade={"persist", "remove"})
+     */
+    private $admin;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="associationMember")
+     */
+    private $members;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->members = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +126,83 @@ class Association
     public function setRegistrationCode(int $registrationCode): self
     {
         $this->registrationCode = $registrationCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getAssociation() === $this) {
+                $event->setAssociation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAdmin(): ?User
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(User $admin): self
+    {
+        // set the owning side of the relation if necessary
+        if ($admin->getAssociation() !== $this) {
+            $admin->setAssociation($this);
+        }
+
+        $this->admin = $admin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setAssociationMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): self
+    {
+        if ($this->members->removeElement($member)) {
+            // set the owning side to null (unless already changed)
+            if ($member->getAssociationMember() === $this) {
+                $member->setAssociationMember(null);
+            }
+        }
 
         return $this;
     }
