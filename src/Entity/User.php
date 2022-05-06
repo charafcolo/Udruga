@@ -21,6 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("api_user")
      */
     private $id;
 
@@ -32,27 +33,32 @@ class User
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_user")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_user")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_user")
      */
     private $password;
 
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_user")
      */
     private $role;
 
     /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="users")
+     * @Groups("api_user")
      */
     private $events;
 
