@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EventController extends JsonController
 {
     /**
-     * @Route("", name="browse", methods={"GET})
+     * @Route("", name="browse", methods={"GET"})
      * 
      */
     public function index(EventRepository $repo): Response
