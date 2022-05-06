@@ -45,7 +45,7 @@ class Event
     private $maxMember;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price;
 

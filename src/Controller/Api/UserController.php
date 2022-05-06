@@ -26,14 +26,6 @@ class UserController extends JsonController
     /**
      * @Route("", name="browse", methods={"GET"})
      * 
-     * * @OA\Response(
-     *     response=200,
-     *     description="Returns all the users",
-     *     @OA\JsonContent(
-     *        type="array",
-     *        @OA\Items(ref=@Model(type=User::class, groups={"api_user"}))
-     *     )
-     * )
      */
     public function index(UserRepository $repo): Response
     {

@@ -45,10 +45,6 @@ class User
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -62,7 +58,7 @@ class User
 
     /**
      * @ORM\OneToOne(targetEntity=Association::class, inversedBy="admin", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $association;
 
@@ -129,17 +125,6 @@ class User
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(string $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
 
     public function getRole(): ?string
     {
