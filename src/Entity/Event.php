@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
+
+use App\Entity\Association;
+use App\Entity\User;
 use App\Repository\EventRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Event
 {
@@ -16,62 +23,74 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("api_event")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_event")
      */
     private $type;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("api_event")
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("api_event")
      */
     private $date;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("api_event")
      */
     private $maxMember;
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Groups("api_event")
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_event")
      */
     private $status;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("api_event")
      */
     private $image;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("api_event")
      */
     private $slug;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="events")
+     * @Groups("api_event")
      */
     private $users;
 
     /**
      * @ORM\ManyToOne(targetEntity=Association::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("api_event")
      */
     private $association;
 
