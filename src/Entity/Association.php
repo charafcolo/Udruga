@@ -30,7 +30,7 @@ class Association
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=9)
      */
     private $siren;
 

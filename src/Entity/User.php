@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use App\Entity\Association;
+use App\Entity\Event;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class User
 {
@@ -21,6 +26,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_user")
      */
     private $firstName;
 
@@ -39,10 +45,6 @@ class User
      */
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $phoneNumber;
 
     /**
      * @ORM\Column(type="string", length=64)
@@ -56,7 +58,7 @@ class User
 
     /**
      * @ORM\OneToOne(targetEntity=Association::class, inversedBy="admin", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $association;
 
@@ -123,17 +125,6 @@ class User
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(string $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
 
     public function getRole(): ?string
     {
