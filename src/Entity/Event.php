@@ -23,7 +23,7 @@ class Event
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * 
+     * @Groups("api_event")
      */
     private $id;
 

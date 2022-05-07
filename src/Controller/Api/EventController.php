@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class EventController extends JsonController
 {
     /**
+     * Route qui affiche tout les events
+     * 
      * @Route("", name="browse", methods={"GET"})
      * 
      */
@@ -36,4 +38,22 @@ class EventController extends JsonController
             ["api_event"]
     );
     }
+
+    /**
+     * Route qui affiche l'event par son ID
+     * 
+     * @Route("/{id}", name="read", methods={"GET"}, requirements={"id":"\d+"})
+     *
+     * 
+     */
+    public function event(Event $event = null): Response 
+    {
+        /* si le parm converter n'a rien avec l'id $event est null */
+        if ($event === null) {
+            //on renvoi du JSON 404
+            return $this->json404("il n'existe pas d'event avec cet ID");
+        }
+        return $this->json200($event, ["api_event"]);
+    }
+
 }
