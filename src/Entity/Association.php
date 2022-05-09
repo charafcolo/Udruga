@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Entity\User;
+use App\Entity\Event;
 use App\Repository\AssociationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AssociationRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Association
 {
@@ -16,46 +20,55 @@ class Association
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("api_association")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_association")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups("api_association")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=9)
+     * @Groups("api_association")
      */
     private $siren;
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Groups("api_association")
      */
     private $email;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("api_association")
      */
     private $registrationCode;
 
     /**
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="association", orphanRemoval=true)
+     * @Groups("api_association")
      */
     private $events;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="association", cascade={"persist", "remove"})
+     * @Groups("api_association")
      */
     private $admin;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="associationMember")
+     * @Groups("api_association")
      */
     private $members;
 
