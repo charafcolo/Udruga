@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,6 +33,18 @@ class EventController extends JsonController
      * 
      * @Route("", name="browse", methods={"GET"})
      * 
+     * @OA\RequestBody(
+     *     @Model(type=Event::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=201,
+     *     description="Show all events",
+     *     @OA\JsonContent(
+     *          ref=@Model(type=Event::class, groups={"api_event"})
+     *      )
+     * )
+     * 
      */
     public function index(EventRepository $repo): Response
     {
@@ -47,6 +60,17 @@ class EventController extends JsonController
      * 
      * @Route("/{id}", name="read", methods={"GET"}, requirements={"id":"\d+"})
      *
+     * @OA\RequestBody(
+     *     @Model(type=Event::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=201,
+     *     description="Shwo one event by id",
+     *     @OA\JsonContent(
+     *          ref=@Model(type=Event::class, groups={"api_event"})
+     *      )
+     * )
      * 
      */
     public function event(Event $event = null): Response 
@@ -65,14 +89,14 @@ class EventController extends JsonController
      * @Route("/edit/{id}", name="edit", methods={"PUT"})
      *
      * @OA\RequestBody(
-     *     @Model(type=User::class)
+     *     @Model(type=Event::class)
      * )
      * 
      * @OA\Response(
      *     response=201,
-     *     description="delete user",
+     *     description="update an event",
      *     @OA\JsonContent(
-     *          ref=@Model(type=User::class, groups={"api_user"})
+     *          ref=@Model(type=Event::class, groups={"api_event"})
      *      )
      * )
      * 
@@ -82,7 +106,7 @@ class EventController extends JsonController
      * @param EntityManagerInterface $em
      * @return JsonResponse
      */
-    public function edit($id, Request $request): JsonResponse
+    public function edit($id, Request $request, EventRepository $eventRepository, EntityManagerInterface $em): JsonResponse
     {
         $event = $this->eventRepository->findOneBy(['id' => $id]);
         $data = json_decode($request->getContent(), true);
@@ -102,7 +126,7 @@ class EventController extends JsonController
     }
 
     /**
-     * road for create an user
+     * road for create an event
      * 
      * @Route("", name="add", methods={"POST"})
      *
