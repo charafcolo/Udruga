@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 /**
  * 
  * @Route("/api/users", name="api_users_")
- * @Route("", name="browse", methods={"GET"}, requirements={"id":"\d+"})
  */
 class UserController extends JsonController
 {
@@ -59,6 +58,10 @@ class UserController extends JsonController
      * Create user
      *
      * @Route("", name="add", methods={"POST"})
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
      * 
      * @param Request $request
      * @param SerializerInterface $serializer
