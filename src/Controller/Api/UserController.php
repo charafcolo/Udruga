@@ -47,7 +47,7 @@ class UserController extends JsonController
      */
     public function user(User $user = null): Response 
     {
-        /* si le parm converter n'a rien avec l'id $event est null */
+        /* si le parm converter n'a rien avec l'id $user est null */
         if ($user === null) {
             //on renvoi du JSON 404
             return $this->json404("il n'existe pas d'user avec cet ID");
