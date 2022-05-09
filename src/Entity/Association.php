@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\User;
 use App\Entity\Event;
 use App\Repository\AssociationRepository;
