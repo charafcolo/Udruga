@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use DateTime;
 
 
 
@@ -108,19 +109,20 @@ class EventController extends JsonController
      */
     public function edit($id, Request $request, EventRepository $eventRepository, EntityManagerInterface $em): JsonResponse
     {
-        $event = $this->eventRepository->findOneBy(['id' => $id]);
+        /* $event = $eventRepository->findOneBy(['id' => $id]); */
+        $event = $eventRepository->findOneBy($id);
         $data = json_decode($request->getContent(), true);
 
         empty($data['title']) ? true : $event->setTitle($data['title']);
         empty($data['type']) ? true : $event->setType($data['type']);
         empty($data['description']) ? true : $event->setDescription($data['description']);
-        empty($data['date']) ? true : $event->setDate($data['date']);
+/*         empty($data['date']) ? true : $event->setDate($data['date']); */        
         empty($data['maxMember']) ? true : $event->setMaxMember($data['maxMember']);
         empty($data['price']) ? true : $event->setPrice($data['price']);
         empty($data['status']) ? true : $event->setStatus($data['status']);
         empty($data['image']) ? true : $event->setImage($data['image']);
 
-        $updatedEvent = $this->eventRepository->updateEvent($event);
+        $updatedEvent = $eventRepository->updateEvent($event);
 
         return new JsonResponse($updatedEvent->toArray(), Response::HTTP_OK);
     }
