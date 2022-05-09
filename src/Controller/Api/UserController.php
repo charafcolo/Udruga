@@ -102,13 +102,26 @@ class UserController extends JsonController
 
     /**
      * Delete user
-     * @Route("/{id}/delete", name="delete", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"POST"})
+     * 
+     * @OA\RequestBody(
+     *     @Model(type=User::class)
+     * )
+     * 
+     * @OA\Response(
+     *     response=201,
+     *     description="delete user",
+     *     @OA\JsonContent(
+     *          ref=@Model(type=User::class, groups={"api_user"})
+     *      )
+     * )
+     * 
      */
     public function delete(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $userRepository->remove($user);
-        }
+        
+        $user->getId();
+        $userRepository->remove($user);
 
         $em->persist($user);
         $em->flush();
