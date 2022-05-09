@@ -3,6 +3,8 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
+use App\Entity\EVent;
+use App\Entity\Association;
 use App\Models\CustomJsonError;
 use OpenApi\Annotations as OA;
 use App\Repository\UserRepository;
@@ -102,7 +104,7 @@ class UserController extends JsonController
 
     /**
      * Delete user
-     * @Route("/{id}", name="delete", methods={"POST"})
+     * @Route("/{id}", name="delete", methods={"DELETE"})
      * 
      * @OA\RequestBody(
      *     @Model(type=User::class)
@@ -117,14 +119,19 @@ class UserController extends JsonController
      * )
      * 
      */
-    public function delete(Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
+    public function delete($id, Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
         
-        $user->getId();
-        $userRepository->remove($user);
+        
 
-        $em->persist($user);
-        $em->flush();
+        if($user = $userRepository->find($id)){
+
+            $userRepository->remove($user);
+            // Surtout ne pas faire un persist si non cela modifie juste l'id
+            $em->flush();
+
+        }
+      
 
         return $this->json200($user, ["api_user"]);
     }
