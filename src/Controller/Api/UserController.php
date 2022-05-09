@@ -57,6 +57,29 @@ class UserController extends JsonController
     }
 
     /**
+     * Mies à jour d'un user
+     * 
+     * @Route("/edit/{id}", name="edit", requirements={"id":"\d+"})
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
+     * 
+     * @param integer $id
+     * @param EntityManagerInterface $em
+     * @param UserRepository $repo
+     * @return Response
+     */
+    public function update(int $id, EntityManagerInterface $em, UserRepository $repo): Response
+    {
+
+        $user = $repo->find($id);
+        $user->setFirstName('pofpof');
+        $em->flush();
+        return $this->json200($user, ["api_user"]);
+    }
+
+    /**
      * Create user
      *
      * @Route("", name="add", methods={"POST"})
@@ -121,18 +144,13 @@ class UserController extends JsonController
      */
     public function delete($id, Request $request, User $user, UserRepository $userRepository, EntityManagerInterface $em): Response
     {
-        
-        
-
+    
         if($user = $userRepository->find($id)){
 
             $userRepository->remove($user);
             // Surtout ne pas faire un persist si non cela modifie juste l'id
             $em->flush();
-
         }
-      
-
         return $this->json200($user, ["api_user"]);
     }
 }
