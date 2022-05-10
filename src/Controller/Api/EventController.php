@@ -23,6 +23,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * 
  * @Route("/api/events", name="api_events_")
  * 
+ * @OA\Tag(name="Udruga API : Events")
+ * 
  */
 class EventController extends JsonController
 {

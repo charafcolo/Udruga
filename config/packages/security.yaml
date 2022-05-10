@@ -28,13 +28,21 @@ security:
         api:
             pattern:   ^/api
             stateless: true
-            jwt: ~
+            # jwt: ~
+            custom_authenticator: App\Security\UdrugaAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
             provider: app_user_provider
+            json_login:
+                check_path: /api/login
+                success_handler:
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -56,8 +64,8 @@ security:
         # la partie API
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
+        # { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        # { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
         - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
 
         # c'est le fonctionnement par defaut, mais des fois être explicite nous aide

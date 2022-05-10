@@ -16,13 +16,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
  * 
  * @Route("/api/users", name="api_users_")
+ * @OA\Tag(name="Udruga API : Users")
+ * 
  */
-class UserController extends JsonController
+class UserController extends AbstractController
 {
     /**
      * List users
@@ -33,8 +37,8 @@ class UserController extends JsonController
     {
         $allUser = $repo->findAll();
 
-        return $this->json200($allUser,
-        ["api_user"]
+        return $this->json($allUser,
+        Response::HTTP_OK, [], ["groups" => ["api_user"]]
     
     );
     }
@@ -51,9 +55,9 @@ class UserController extends JsonController
         /* si le parm converter n'a rien avec l'id $user est null */
         if ($user === null) {
             //on renvoi du JSON 404
-            return $this->json404("il n'existe pas d'user avec cet ID");
+            return $this->json("il n'existe pas d'user avec cet ID");
         }
-        return $this->json200($user, ["api_user"]);
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
 
     /**
@@ -91,7 +95,7 @@ class UserController extends JsonController
         $user->setRole($updatedUser->role);
         
         $em->flush();
-        return $this->json200($user, ["api_user"]);
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
 
     /**
@@ -163,9 +167,9 @@ class UserController extends JsonController
         if($user = $userRepository->find($id)){
 
             $userRepository->remove($user);
-            // Surtout ne pas faire un persist si non cela modifie juste l'id
+   
             $em->flush();
         }
-        return $this->json200($user, ["api_user"]);
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
 }
