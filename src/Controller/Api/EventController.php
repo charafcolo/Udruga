@@ -186,3 +186,4 @@ class EventController extends JsonController
         return $this->json200($event, ["api_event"]);
     }
 }
+
