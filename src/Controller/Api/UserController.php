@@ -70,11 +70,15 @@ class UserController extends JsonController
      * @param UserRepository $repo
      * @return Response
      */
-    public function update(int $id, EntityManagerInterface $em, UserRepository $repo): Response
+    public function update(User $newUser, User $user, Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): Response
     {
+     
+        
+        $jsonContent = json_decode($request->getContent());
+       
 
         $user = $repo->find($id);
-        $user->setFirstName('pofpof');
+        $user->setFirstName($newUser->getFirstName());
         $em->flush();
         return $this->json200($user, ["api_user"]);
     }
