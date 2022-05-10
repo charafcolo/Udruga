@@ -3,16 +3,38 @@ security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
+          # A METTRE ABSOLUMENT AVANT MAIN, sinon ça marche pas
+        login:
+            pattern: ^/api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        # bundle openAPI
+        nelmio_api_doc:
+            pattern: ^/api/doc
+            stateless: true
+        api:
+            pattern:   ^/api
+            stateless: true
+            jwt: ~
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: app_user_provider
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -23,9 +45,30 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # ici je veux interdire l'accès à toutes les URL qui commencent par '/back'
+        # pour accèder aux URLS qui commencent par '/back' il faut le role ROLE_ADMIN
+        # dès qu'un path correspond on applique, et on s'arrête = l'ordre est important
+        # roles est un tableau, on peut donc mettre plusieurs roles : [ROLE_1, ROLE_2, ...]
+        
+        # Penser à utiliser bin/console debug:router pour avoir tous les motifs d'URL sous les yeux
 
+        
+        # la partie API
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
+        - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
+
+        # c'est le fonctionnement par defaut, mais des fois être explicite nous aide
+        - { path: ^/, roles: PUBLIC_ACCESS}
+
+    role_hierarchy:
+        ROLE_DEV : ROLE_ADMIN
+        # si j'ai le role DEV : j'ai aussi le role ADMIN
+        ROLE_ADMIN: ROLE_USER
+        # si j'ai le role ADMIN : j'ai aussi le role USER
+      
 when@test:
     security:
         password_hashers:
@@ -38,3 +81,4 @@ when@test:
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+
