@@ -59,7 +59,7 @@ class UserController extends JsonController
     /**
      * Mies à jour d'un user
      * 
-     * @Route("/edit/{id}", name="edit", requirements={"id":"\d+"})
+     * @Route("/edit/{id}", name="edit", methods={"PUT"}, requirements={"id":"\d+"})
      * 
      * @OA\RequestBody(
      * @Model(type=User::class)
@@ -70,15 +70,26 @@ class UserController extends JsonController
      * @param UserRepository $repo
      * @return Response
      */
-    public function update(User $newUser, User $user, Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): Response
+    public function update(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
     {
      
         
-        $jsonContent = json_decode($request->getContent());
+        $jsonContent = $request->getContent();
+    
+
+        $updatedUser = json_decode($jsonContent);
+        // dd($updatedUser);
        
+        // $userString = strval($jsonContent);
+
 
         $user = $repo->find($id);
-        $user->setFirstName($newUser->getFirstName());
+        $user->setFirstName($updatedUser->firstName);
+        $user->setLastName($updatedUser->lastName);
+        $user->setEmail($updatedUser->email);
+        $user->setPassword($updatedUser->password);
+        $user->setRole($updatedUser->role);
+        
         $em->flush();
         return $this->json200($user, ["api_user"]);
     }
