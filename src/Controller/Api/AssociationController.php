@@ -24,6 +24,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/api/associations", name="api_associations_")
+ * 
+ * @OA\Tag(name="Udruga API : Associations")
  */
 class AssociationController extends JsonController
 {
