@@ -29,7 +29,7 @@ class UserFixtures extends Fixture
         $user = new User();
         $user->setEmail("user@user.com");
         $user->setPassword("1234");
-        $user->setRole(["ROLE_USER"]);
+        $user->setRoles(["ROLE_USER"]);
         $user->setFirstName("Bill");
         $user->setLastName("Boquet");
         $manager->persist($user);
@@ -41,7 +41,7 @@ class UserFixtures extends Fixture
         $newUserAdmin->setLastName("Neymar");
         $newUserAdmin->setEmail('admin@admin.com')
             ->setPassword("1234")
-            ->setRole(['ROLE_ADMIN']);
+            ->setRoles(['ROLE_ADMIN']);
         $manager->persist($newUserAdmin);
 
         $manager->flush();
