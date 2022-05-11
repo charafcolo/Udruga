@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\Api\JsonController;
 
 
 /**
@@ -92,7 +93,7 @@ class UserController extends AbstractController
         $user->setLastName($updatedUser->lastName);
         $user->setEmail($updatedUser->email);
         $user->setPassword($updatedUser->password);
-        $user->setRole($updatedUser->role);
+        $user->setRoles($updatedUser->roles);
         
         $em->flush();
         return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);

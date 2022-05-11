@@ -62,7 +62,7 @@ class User
      * @Groups("api_user")
      * @OA\Property(type="array", @OA\Items(type="string"))
      */
-    private $role =[];
+    private $roles = array();
 
     /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="users")
@@ -140,18 +140,18 @@ class User
     }
 
 
-    public function getRole(): array
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
         // guarantee every user at least has ROLE_USER
-        $role[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER';
 
-        return array_unique($role);
+        return array_unique($roles);
     }
 
-    public function setRole(array $role): self
+    public function setRoles(array $roles): self
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }

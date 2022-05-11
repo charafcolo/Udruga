@@ -41,7 +41,7 @@ security:
             lazy: true
             provider: app_user_provider
             json_login:
-                check_path: /api/login
+                check_path: api_login
                 success_handler:
 
             # activate different ways to authenticate
@@ -64,8 +64,8 @@ security:
         # la partie API
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
-        # { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-        # { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
         - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
 
         # c'est le fonctionnement par defaut, mais des fois être explicite nous aide
