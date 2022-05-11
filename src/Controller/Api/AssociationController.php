@@ -36,9 +36,9 @@ class AssociationController extends JsonController
      */
     public function index(AssociationRepository $repo): Response
     {
-        $allUser = $repo->findAll();
+        $allAssociations = $repo->findAll();
 
-        return $this->json200($allUser,
+        return $this->json200($allAssociations,
         ["api_association"]
     
     );
