@@ -28,21 +28,37 @@ class UserFixtures extends Fixture
     {
         $user = new User();
         $user->setEmail("user@user.com");
-        $user->setPassword("1234");
+
+        $plaintextPassword = "user";
+
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $plaintextPassword
+        );
+        $user->setPassword($hashedPassword);
+
         $user->setRoles(["ROLE_USER"]);
-        $user->setFirstName("Bill");
-        $user->setLastName("Boquet");
+        $user->setFirstName("Jean");
+        $user->setLastName("Némar");
         $manager->persist($user);
 
         // ------------userAdmin-----------
-    
-        $newUserAdmin = new User();
-        $newUserAdmin->setFirstName("Jean");
-        $newUserAdmin->setLastName("Neymar");
-        $newUserAdmin->setEmail('admin@admin.com')
-            ->setPassword("1234")
-            ->setRoles(['ROLE_ADMIN']);
-        $manager->persist($newUserAdmin);
+
+        $admin = new User();
+        $admin->setEmail("admin@admin.com");
+
+        $plaintextPassword = "admin";
+
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $admin,
+            $plaintextPassword
+        );
+        $admin->setPassword($hashedPassword);
+
+        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setFirstName("Billy");
+        $admin->setLastName("Tropfort");
+        $manager->persist($admin);
 
         $manager->flush();
 
