@@ -12,8 +12,8 @@ class UserFixtures extends Fixture
 
 
     /**
-     * Permet de faire de l'injection de dépendance
-     * car la méthode load() ne l'autorise pas
+     * Can inject dependency
+     * cause the load() method unauthorized it 
      * 
      * @link https://symfony.com/doc/current/security/passwords.html#hashing-the-password
      * 
@@ -26,6 +26,8 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // ------------user-----------
+
         $user = new User();
         $user->setEmail("user@user.com");
 
@@ -42,7 +44,7 @@ class UserFixtures extends Fixture
         $user->setLastName("Némar");
         $manager->persist($user);
 
-        // ------------userAdmin-----------
+        // ------------admin-----------
 
         $admin = new User();
         $admin->setEmail("admin@admin.com");
