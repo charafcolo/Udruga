@@ -12,8 +12,8 @@ class UserFixtures extends Fixture
 
 
     /**
-     * Permet de faire de l'injection de dépendance
-     * car la méthode load() ne l'autorise pas
+     * Can inject dependency
+     * cause the load() method unauthorized it 
      * 
      * @link https://symfony.com/doc/current/security/passwords.html#hashing-the-password
      * 
@@ -26,23 +26,41 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // ------------user-----------
+
         $user = new User();
         $user->setEmail("user@user.com");
-        $user->setPassword("1234");
+
+        $plaintextPassword = "user";
+
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $user,
+            $plaintextPassword
+        );
+        $user->setPassword($hashedPassword);
+
         $user->setRoles(["ROLE_USER"]);
-        $user->setFirstName("Bill");
-        $user->setLastName("Boquet");
+        $user->setFirstName("Jean");
+        $user->setLastName("Némar");
         $manager->persist($user);
 
-        // ------------userAdmin-----------
-    
-        $newUserAdmin = new User();
-        $newUserAdmin->setFirstName("Jean");
-        $newUserAdmin->setLastName("Neymar");
-        $newUserAdmin->setEmail('admin@admin.com')
-            ->setPassword("1234")
-            ->setRoles(['ROLE_ADMIN']);
-        $manager->persist($newUserAdmin);
+        // ------------admin-----------
+
+        $admin = new User();
+        $admin->setEmail("admin@admin.com");
+
+        $plaintextPassword = "admin";
+
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $admin,
+            $plaintextPassword
+        );
+        $admin->setPassword($hashedPassword);
+
+        $admin->setRoles(["ROLE_ADMIN"]);
+        $admin->setFirstName("Billy");
+        $admin->setLastName("Tropfort");
+        $manager->persist($admin);
 
         $manager->flush();
 

@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
-class User 
+class User implements UserInterface
 {
     /**
      * @ORM\Id

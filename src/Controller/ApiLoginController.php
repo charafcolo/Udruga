@@ -14,22 +14,22 @@ class ApiLoginController extends AbstractController
     /**
      * @Route("/api/login", name="api_login")
      */
-    public function index(User $user, TokenInterface $token): Response
+    public function index(): Response
     {
   
-        if (null === $user) {
-                       return $this->json([
-                           'message' => 'missing credentials',
-                       ], Response::HTTP_UNAUTHORIZED);
-                   }
+        // if (null === $user) {
+        //                return $this->json([
+        //                    'message' => 'missing credentials',
+        //                ], Response::HTTP_UNAUTHORIZED);
+        //            }
         
     //    $token = $token; // somehow create an API token for $user
 
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/ApiLoginController.php',
-            'user'  => $user->getUserIdentifier(),
-            'token' => $token,
+            // 'user'  => $user->getUserIdentifier(),
+            // 'token' => $token,
         ]);
     }
 }
