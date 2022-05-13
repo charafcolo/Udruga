@@ -64,10 +64,11 @@ security:
         
         # la partie API
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
         - { path: ^/api/doc, roles: PUBLIC_ACCESS }
-        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
-        - { path: ^/api/users, roles: [ROLE_ADMIN], methods: [POST]}
-        - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
+        # { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
+        # { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY }
 
         # c'est le fonctionnement par defaut, mais des fois être explicite nous aide
         - { path: ^/, roles: PUBLIC_ACCESS}
