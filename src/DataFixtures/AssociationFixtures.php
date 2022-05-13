@@ -14,12 +14,11 @@ class AssociationFixtures extends Fixture
      
         $association = new Association();
         $association->setName("Association des paralysés de France");
-        $association->setDescription("Une association qui essaye de faire bouger les choses en France. Mais c’est pas toujours facile.".$count);
-        $association->setSiren(8293200007);
+        $association->setDescription("Une association qui essaye de faire bouger les choses en France. Mais c’est pas toujours facile.");
+        $association->setSiren(829320007);
         $association->setEmail("jeanjambedebois@gmail.com");
         $association->setRegistrationCode(123456);
-        $association->setAdmin($this->getReference(User::class.'_0'));
-
+        
         $manager->persist($association);
         $manager->flush();
 
