@@ -211,7 +211,7 @@ class Association
     public function removeMember(User $member): self
     {
         if ($this->members->removeElement($member)) {
-            // set the owning side to null (unless already changed)
+            // set the owning side to null (unless  already changed)
             if ($member->getAssociationMember() === $this) {
                 $member->setAssociationMember(null);
             }
