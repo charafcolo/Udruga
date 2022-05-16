@@ -116,7 +116,8 @@ class UserController extends AbstractController
     public function create(
         Request $request,
         SerializerInterface $serializer,
-        EntityManagerInterface $em 
+        EntityManagerInterface $em,
+        UserPasswordHasherInterface $hasher
         ): JsonResponse
     {
         // Récupérer le contenu JSON
@@ -124,9 +125,19 @@ class UserController extends AbstractController
 
         // Désérialiser (convertir) le JSON en entité Doctrine User
         $user = $serializer->deserialize($jsonContent, User::class, 'json');
+
+        // get the no hashed password
+        $plaintextPassword = $user->getPassword();
+
+        // hashed the password with hashPassword()
+        $hashedPassword = $hasher->hashPassword($user, $plaintextPassword); 
+
+        // set the user hashed password 
+        $user->setPassword($hashedPassword);
+        // dd($user);
          
         // On sauvegarde l'entité
-        $em->persist($user);
+        $em->persist($user, $hashedPassword);
         $em->flush();
 
         // TODO : return 201
