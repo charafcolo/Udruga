@@ -19,10 +19,12 @@ class AssoEventFixtures extends Fixture
         // Association create :
         $association1 = new Association();
         $association1->setName("Les amis des animaux");
-        $association1->setDescription("Une association de personne aui aime et qui aide les animaux.");
+        $association1->setDescription("Une association de personnes qui aiment et qui aident les animaux.");
         $association1->setSiren(829320007);
         $association1->setEmail("animaux@gmail.com");
         $association1->setRegistrationCode(123456);
+
+        $manager->persist($association1);
 
         // Association number 2
         $association2 = new Association();
@@ -32,6 +34,9 @@ class AssoEventFixtures extends Fixture
         $association2->setEmail("footballclubbordeaux@gmail.com");
         $association2->setRegistrationCode(123457);
 
+        $manager->persist($association2);
+       
+
         // Association number 3
         $association3 = new Association();
         $association3->setName("Aide aux sans abris");
@@ -40,30 +45,35 @@ class AssoEventFixtures extends Fixture
         $association3->setEmail("demunisromans@gmail.com");
         $association3->setRegistrationCode(123459);
         
-        $manager->persist($association1, $association2, $association3);
+        $manager->persist($association3);
        
         // Fixtures for event1
-        
-        $event1 = new Event();
 
-        $event1->setTitle("Assemblée générale");
-        $event1->setType("Réunion");
-        $event1->setDescription("Notre assembléé générale anuelle, échange avec les membres de l'associations, problèmatique, budget, etc.");
-        
-        $date1 = new DateTime();
-        $date1 = $date1->setDate((2022),(07),(06));
+       
+            $event1 = new Event();
 
-        $event1->setDate($date1);
+            $event1->setTitle("Assemblée générale");
+            $event1->setType("Réunion");
+            $event1->setDescription("Notre assembléé générale anuelle, échange avec les membres de l'associations, problèmatique, budget, etc.");
+            
+            $date1 = new DateTime();
+            $date1 = $date1->setDate((2022),(07),(06));
+    
+            $event1->setDate($date1);
+    
+            $event1->setMaxMember(15);
+            $event1->setPrice(20,00);
+            $event1->setStatus("En cours");
+            $event1->setImage("https://loremflickr.com/320/240/assembly");
+            
+            
+            $event1->setAssociation($association1);
 
-        $event1->setMaxMember(15);
-        $event1->setPrice(20,00);
-        $event1->setStatus("En cours");
-        $event1->setImage("https://loremflickr.com/320/240/assembly");
-        
-        
-        $event1->setAssociation($association1);
+             // $product = new Product();
+        $manager->persist($event1);
+       
 
-        // Event number 2 for association1
+             // Event number 2 for association1
 
         $event2 = new Event();
 
@@ -73,8 +83,8 @@ class AssoEventFixtures extends Fixture
         
         $date2 = new DateTime();
         $date2 = $date2->setDate((2023),(04),(10));
-        dd($date2);
-        // $event2->setDate($date2);
+        // dd($date2);
+        $event2->setDate($date2);
 
         $event2->setMaxMember(30);
         $event2->setPrice(25,00);
@@ -84,6 +94,9 @@ class AssoEventFixtures extends Fixture
         
         $event2->setAssociation($association1);
 
+         // $product = new Product();
+         $manager->persist($event2);
+         
         // Event number 3 for association1
         
         $event3 = new Event();
@@ -93,7 +106,7 @@ class AssoEventFixtures extends Fixture
         $event3->setDescription("Cette formation est dédidée aux personnes qui souhaitent drésser leurs chiens.");
         
         $date3 = new DateTime();
-        $date3 = $date3->setDate((2022),(08),(20));
+        $date3 = $date3->setDate((2022),(8),(2));
 
         $event3->setDate($date3);
 
@@ -106,7 +119,7 @@ class AssoEventFixtures extends Fixture
         $event3->setAssociation($association1);
 
         // $product = new Product();
-        $manager->persist($event1, $event2, $event3);
+        $manager->persist($event3);
 
         $manager->flush();
     }
