@@ -22,7 +22,7 @@ class AssoEventFixtures extends Fixture
         $association1->setDescription("Une association de personnes qui aiment et qui aident les animaux.");
         $association1->setSiren(829320007);
         $association1->setEmail("animaux@gmail.com");
-        $association1->setRegistrationCode(123456);
+        //$association1->setRegistrationCode(123456);
 
         $manager->persist($association1);
 
@@ -32,7 +32,7 @@ class AssoEventFixtures extends Fixture
         $association2->setDescription("L'association sportif de football pour les jeunes de la ville de Bordeaux");
         $association2->setSiren(123456789);
         $association2->setEmail("footballclubbordeaux@gmail.com");
-        $association2->setRegistrationCode(123457);
+        //$association2->setRegistrationCode(123457);
 
         $manager->persist($association2);
        
@@ -43,7 +43,7 @@ class AssoEventFixtures extends Fixture
         $association3->setDescription("L'association qui aide les démunis de la ville de Romans");
         $association3->setSiren(123456759);
         $association3->setEmail("demunisromans@gmail.com");
-        $association3->setRegistrationCode(123459);
+        //$association3->setRegistrationCode(123459);
         
         $manager->persist($association3);
        

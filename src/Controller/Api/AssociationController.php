@@ -90,7 +90,7 @@ class AssociationController extends JsonController
         $association->setDescription($updatedAssociation->description);
         $association->setSiren($updatedAssociation->siren);
         $association->setEmail($updatedAssociation->email);
-        $association->setRegistrationCode($updatedAssociation->password);
+        //$association->setRegistrationCode($updatedAssociation->password);
         $association->setAdmin($updatedAssociation->admin);
     
 
