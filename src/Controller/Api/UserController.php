@@ -19,8 +19,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Controller\Api\JsonController;
-
-
+use App\Repository\AssociationRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 /**
  * 
  * @Route("/api/users", name="api_users_")
@@ -62,9 +62,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * Mies à jour d'un user
+     * Mise à jour d'un user
      * 
-     * @Route("/edit/{id}", name="edit", methods={"PUT"}, requirements={"id":"\d+"})
+     * @Route("/edit/{id}", name="edit-patch", methods={"PUT"}, requirements={"id":"\d+"})
      * 
      * @OA\RequestBody(
      * @Model(type=User::class)
@@ -73,9 +73,10 @@ class UserController extends AbstractController
      * @param integer $id
      * @param EntityManagerInterface $em
      * @param UserRepository $repo
+     * @param User $user
      * @return Response
      */
-    public function update(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
+    public function updatePut(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
     {
      
         
@@ -94,6 +95,46 @@ class UserController extends AbstractController
         $user->setEmail($updatedUser->email);
         $user->setPassword($updatedUser->password);
         $user->setRoles($updatedUser->roles);
+        
+        $em->flush();
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
+    }
+
+
+        /**
+     * Mise à jour partielle d'un user
+     * 
+     * @Route("/edit/{id}", name="edit-patch", methods={"PATCH"}, requirements={"id":"\d+"})
+     * 
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
+     * 
+     * @param integer $id
+     * @param EntityManagerInterface $em
+     * @param UserRepository $repo
+     * @param AssociationRepository $assorepo
+     * @return Response
+     */
+    public function updatePatch(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, AssociationRepository $associationRepository): JsonResponse
+    {
+     
+        
+        $jsonContent = $request->getContent();
+    
+
+        $updatedUser = json_decode($jsonContent);
+        // dd($updatedUser);
+       
+
+        $user = $repo->find($id);
+      
+
+        $association = $associationRepository->find($updatedUser->associationMember);
+
+        $user->setAssociation($association);
+        
         
         $em->flush();
         return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
