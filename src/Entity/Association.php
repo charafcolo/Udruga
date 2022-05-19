@@ -49,12 +49,6 @@ class Association
     private $email;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups("api_association")
-     */
-    private $registrationCode;
-
-    /**
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="association", orphanRemoval=true)
      * @Groups("api_association")
      */
@@ -131,17 +125,6 @@ class Association
         return $this;
     }
 
-    public function getRegistrationCode(): ?int
-    {
-        return $this->registrationCode;
-    }
-
-    public function setRegistrationCode(int $registrationCode): self
-    {
-        $this->registrationCode = $registrationCode;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Event>
