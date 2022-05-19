@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Association;
 use App\Entity\Event;
 use App\Repository\UserRepository;
+use App\Repository\AssociationRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
