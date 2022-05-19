@@ -142,9 +142,9 @@ class UserController extends AbstractController
     }
 
     /**
-     * Registre to an event
+     * Join to an event
      * 
-     * @Route("/event/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * @Route("/event/add/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
      * 
      * 
      * @OA\RequestBody(
@@ -180,7 +180,44 @@ class UserController extends AbstractController
         return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
 
+    /**
+     * unsubcribe to an event
+     * 
+     * @Route("/event/remove/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * 
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
+     * 
+     * @param integer $id
+     * @param EntityManagerInterface $em
+     * @param UserRepository $repo
+     * @param EventRepository $eventRepo
+     * @return Response
+     */
+    public function removeJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
+    {
+     
+        
+        $jsonContent = $request->getContent();
+    
 
+        $updatedUser = json_decode($jsonContent);
+        //dd($updatedUser);
+       
+
+        $user = $repo->find($id);
+      
+
+        $event = $eventRepo->find($updatedUser->users);
+
+        $user->removeEvent($event);
+        
+        
+        $em->flush();
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
+    }
 
 
 
