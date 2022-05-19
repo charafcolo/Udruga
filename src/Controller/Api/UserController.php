@@ -76,7 +76,7 @@ class UserController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function updatePut(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
+    public function updateUser(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
     {
      
         
@@ -117,7 +117,7 @@ class UserController extends AbstractController
      * @param AssociationRepository $assorepo
      * @return Response
      */
-    public function updatePatch(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, AssociationRepository $associationRepository): JsonResponse
+    public function updateJoinAsso(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, AssociationRepository $associationRepository): JsonResponse
     {
      
         
