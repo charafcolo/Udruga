@@ -198,7 +198,8 @@ class UserController extends AbstractController
      */
     public function removeJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
     {
-        // commentaire test
+        // commentaire test 
+        // deuxieme commentaire test
         
         $jsonContent = $request->getContent();
     
