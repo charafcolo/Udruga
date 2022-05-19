@@ -3,11 +3,12 @@
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Entity\EVent;
+use App\Entity\Event;
 use App\Entity\Association;
 use App\Models\CustomJsonError;
 use OpenApi\Annotations as OA;
 use App\Repository\UserRepository;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,7 +65,7 @@ class UserController extends AbstractController
     /**
      * Mise à jour d'un user
      * 
-     * @Route("/edit/{id}", name="edit-patch", methods={"PUT"}, requirements={"id":"\d+"})
+     * @Route("/edit/{id}", name="edit-user", methods={"PUT"}, requirements={"id":"\d+"})
      * 
      * @OA\RequestBody(
      * @Model(type=User::class)
@@ -104,7 +105,7 @@ class UserController extends AbstractController
         /**
      * Mise à jour partielle d'un user
      * 
-     * @Route("/edit/{id}", name="edit-patch", methods={"PATCH"}, requirements={"id":"\d+"})
+     * @Route("/edit/{id}", name="join-asso", methods={"PATCH"}, requirements={"id":"\d+"})
      * 
      * 
      * @OA\RequestBody(
@@ -139,6 +140,86 @@ class UserController extends AbstractController
         $em->flush();
         return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
+
+    /**
+     * Join to an event
+     * 
+     * @Route("/event/add/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * 
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
+     * 
+     * @param integer $id
+     * @param EntityManagerInterface $em
+     * @param UserRepository $repo
+     * @param EventRepository $eventRepo
+     * @return Response
+     */
+    public function updateJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
+    {
+     
+        
+        $jsonContent = $request->getContent();
+    
+
+        $updatedUser = json_decode($jsonContent);
+        //dd($updatedUser);
+       
+
+        $user = $repo->find($id);
+      
+
+        $event = $eventRepo->find($updatedUser->users);
+
+        $user->addEvent($event);
+        
+        
+        $em->flush();
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
+    }
+
+    /**
+     * unsubcribe to an event
+     * 
+     * @Route("/event/remove/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * 
+     * 
+     * @OA\RequestBody(
+     * @Model(type=User::class)
+     * )
+     * 
+     * @param integer $id
+     * @param EntityManagerInterface $em
+     * @param UserRepository $repo
+     * @param EventRepository $eventRepo
+     * @return Response
+     */
+    public function removeJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
+    {
+     
+        
+        $jsonContent = $request->getContent();
+    
+
+        $updatedUser = json_decode($jsonContent);
+        //dd($updatedUser);
+       
+
+        $user = $repo->find($id);
+      
+
+        $event = $eventRepo->find($updatedUser->users);
+
+        $user->removeEvent($event);
+        
+        
+        $em->flush();
+        return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
+    }
+
+
 
     /**
      * Create user
