@@ -165,7 +165,7 @@ class UserController extends AbstractController
     
 
         $updatedUser = json_decode($jsonContent);
-        //dd($updatedUser);
+        // dd($updatedUser);
        
 
         $user = $repo->find($id);
@@ -183,7 +183,7 @@ class UserController extends AbstractController
     /**
      * unsubcribe to an event
      * 
-     * @Route("/event/remove/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * @Route("/event/remove/{id}", name="left-event", methods={"PATCH"}, requirements={"id":"\d+"})
      * 
      * 
      * @OA\RequestBody(
@@ -214,6 +214,9 @@ class UserController extends AbstractController
         $event = $eventRepo->find($updatedUser->users);
 
         $user->removeEvent($event);
+
+
+        // $em->persist($user);
         
         
         $em->flush();
