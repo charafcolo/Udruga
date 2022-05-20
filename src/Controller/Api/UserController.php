@@ -141,6 +141,12 @@ class UserController extends AbstractController
         return $this->json($user, Response::HTTP_OK, [], ["groups" => ["api_user"]]);
     }
 
+    
+    //? Faire joinRemoveAsso
+
+
+
+
     /**
      * Join to an event
      * 
@@ -183,7 +189,7 @@ class UserController extends AbstractController
     /**
      * unsubcribe to an event
      * 
-     * @Route("/event/remove/{id}", name="left-event", methods={"PATCH"}, requirements={"id":"\d+"})
+     * @Route("/event/remove/{id}", name="left-event", methods={"DELETE"}, requirements={"id":"\d+"})
      * 
      * 
      * @OA\RequestBody(
