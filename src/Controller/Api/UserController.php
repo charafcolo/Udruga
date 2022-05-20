@@ -214,7 +214,7 @@ class UserController extends AbstractController
         $user->removeEvent($event);
 
 
-        // $em->persist($user);
+        $em->persist($user);
         
         
         $em->flush();
