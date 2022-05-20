@@ -21,6 +21,7 @@ class Association
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      * @Groups("api_association")
+     * @Groups("api_user")
      */
     private $id;
 

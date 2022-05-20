@@ -74,11 +74,13 @@ class User implements UserInterface
     /**
      * @ORM\OneToOne(targetEntity=Association::class, inversedBy="admin", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
+     * @Groups("api_user")
      */
     private $association;
 
     /**
      * @ORM\ManyToOne(targetEntity=Association::class, inversedBy="members")
+     * @Groups("api_user")
      */
     private $associationMember;
 
