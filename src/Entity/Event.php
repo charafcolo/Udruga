@@ -51,7 +51,7 @@ class Event
     private $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @Groups("api_event")
      */
     private $maxMember;
@@ -63,7 +63,7 @@ class Event
     private $price;
 
     /**
-     * @ORM\Column(type="string", length=64)
+     * @ORM\Column(type="string", length=64, nullable=true)
      * @Groups("api_event")
      */
     private $status;
