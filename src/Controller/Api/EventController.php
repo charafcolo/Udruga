@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\Association;
 use App\Entity\User;
 use App\Models\CustomJsonError;
+use App\Repository\AssociationRepository;
 use OpenApi\Annotations as OA;
 use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -130,13 +131,15 @@ class EventController extends JsonController
      * @param EntityManagerInterface $em
      * @return JsonResponse
      */
-    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em ): JsonResponse
+    public function create(Request $request, SerializerInterface $serializer, EntityManagerInterface $em): JsonResponse
     {
         // Recover the content
         $jsonContent = $request->getContent();
 
         // Deserialize the JSON 
         $event = $serializer->deserialize($jsonContent, Event::class, 'json');
+
+        // dd($event);
         
         // save on DB
         $em->persist($event);

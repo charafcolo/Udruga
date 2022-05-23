@@ -22,6 +22,7 @@ class Association
      * @ORM\Column(type="integer")
      * @Groups("api_association")
      * @Groups("api_user")
+     * @Groups("api_asso")
      */
     private $id;
 

@@ -31,7 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class UserController extends AbstractController
 {
     /**
-     * List users
+     * Show all users
      * @Route("", name="browse", methods={"GET"})
      * 
      */
@@ -45,8 +45,44 @@ class UserController extends AbstractController
     );
     }
 
-        /**
-     * Read user by ID
+    /**
+     * show the user's association
+     * @Route("/asso/{id}", name="asso", methods={"GET"})
+     *
+     * @param User $asso
+     * @return Response
+     */
+    public function asso(Association $asso): Response
+    {
+   // Gestion du paramConverter
+   if ($asso === null) {
+    return $this->json("J'ai pas trouvé l'asso par l'ID que tu m'as donné, essaie encore.");
+}
+
+return $this->json(
+    // les données à serialiser
+    // $asso->getAssociation()
+    [
+        'asso' => $asso
+    ]
+    ,
+    // le HTTP status code, 200
+    Response::HTTP_OK,
+    // les entetes HTTP, par défault 
+    [],
+    // dans le context, on précise les groupes de serialisation
+    // pour limiter les propriétés que l'on veut serialiser
+    [
+        "groups" => 
+        [
+            "api_asso"
+        ]
+    ]
+);
+    }
+
+     /**
+     * Show user by ID
      * 
      * @Route("/{id}", name="read", methods={"GET"}, requirements={"id":"\d+"})
      *
@@ -63,9 +99,8 @@ class UserController extends AbstractController
     }
 
     /**
-     * Mise à jour d'un user
-     * 
-     * @Route("/edit/{id}", name="edit-user", methods={"PUT"}, requirements={"id":"\d+"})
+     * Update user
+     * @Route("/edit/{id}", name="edit_user_put", methods={"PUT"}, requirements={"id":"\d+"})
      * 
      * @OA\RequestBody(
      * @Model(type=User::class)
@@ -77,10 +112,9 @@ class UserController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function updateUser(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo): JsonResponse
+    public function updateUser(User $user,Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, UserPasswordHasherInterface $hasher): JsonResponse
     {
      
-        
         $jsonContent = $request->getContent();
     
 
@@ -94,7 +128,15 @@ class UserController extends AbstractController
         $user->setFirstName($updatedUser->firstName);
         $user->setLastName($updatedUser->lastName);
         $user->setEmail($updatedUser->email);
-        $user->setPassword($updatedUser->password);
+        // get the no hashed password
+        $plaintextPassword = $user->getPassword();
+
+        // hashed the password with hashPassword()
+        $hashedPassword = $hasher->hashPassword($user, $plaintextPassword); 
+
+        // set the user hashed password 
+        $user->setPassword($hashedPassword);
+        // dd($user);
         $user->setRoles($updatedUser->roles);
         
         $em->flush();
@@ -102,9 +144,8 @@ class UserController extends AbstractController
     }
 
 
-        /**
-     * Mise à jour partielle d'un user
-     * 
+     /**
+     * join association
      * @Route("/edit/{id}", name="join-asso", methods={"PATCH"}, requirements={"id":"\d+"})
      * 
      * 
@@ -149,7 +190,6 @@ class UserController extends AbstractController
 
     /**
      * Join to an event
-     * 
      * @Route("/event/add/{id}", name="join-event", methods={"PATCH"}, requirements={"id":"\d+"})
      * 
      * 
@@ -163,7 +203,7 @@ class UserController extends AbstractController
      * @param EventRepository $eventRepo
      * @return Response
      */
-    public function updateJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
+    public function joinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
     {
      
         
@@ -188,7 +228,6 @@ class UserController extends AbstractController
 
     /**
      * unsubcribe to an event
-     * 
      * @Route("/event/remove/{id}", name="left-event", methods={"DELETE"}, requirements={"id":"\d+"})
      * 
      * 
@@ -202,7 +241,7 @@ class UserController extends AbstractController
      * @param EventRepository $eventRepo
      * @return Response
      */
-    public function removeJoinEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
+    public function leaveEvent(Request $request, int $id, EntityManagerInterface $em, UserRepository $repo, EventRepository $eventRepo): JsonResponse
     {
        
         $jsonContent = $request->getContent();
@@ -230,8 +269,7 @@ class UserController extends AbstractController
 
 
     /**
-     * Create user
-     *
+     * Create user (admin or member)
      * @Route("", name="add", methods={"POST"})
      * 
      * @OA\RequestBody(

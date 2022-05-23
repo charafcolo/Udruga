@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use App\Entity\Association;
 use App\Entity\User;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -33,6 +34,7 @@ public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $even
         'email' => $user->getEmail(),
         'roles' => $user->getRoles(),
         'events' => $user->getEvents(),
+        'association' => $user->getAssociation(),
 
     );
 

@@ -87,8 +87,8 @@ class Event
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Association::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Association::class, cascade={"persist"}, inversedBy="events")
+     * @ORM\JoinColumn(nullable=true)
      * @Groups("api_event")
      */
     private $association;
