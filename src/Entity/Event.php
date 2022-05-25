@@ -81,7 +81,7 @@ class Event
     private $slug;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="events")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="events", fetch="EAGER")
      * @Groups("api_event")
      */
     private $users;
