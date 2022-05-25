@@ -66,7 +66,7 @@ class User implements UserInterface
     private $roles = array();
 
     /**
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="users")
+     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="users", fetch="EAGER")
      * @Groups("api_user")
      */
     private $events;

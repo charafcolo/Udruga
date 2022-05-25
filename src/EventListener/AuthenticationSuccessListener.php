@@ -22,9 +22,13 @@ public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $even
      */
     $user = $event->getUser();
 
+    
+
     if (!$user instanceof UserInterface) {
         return;
     }
+
+    
 
     $data['user'] = array(
         'id' => $user->getId(),
@@ -33,13 +37,25 @@ public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $even
         'lastname' => $user->getLastName(),
         'email' => $user->getEmail(),
         'roles' => $user->getRoles(),
-        'events' => $user->getEvents(),
-        'association' => $user->getAssociation(),
-
     );
+
+    $events = $user->getEvents()->getValues();
+    $data['user']['events']= [];
+    if($events){
+        
+        foreach($events as $evt)
+        {
+            // dd($event->getId());
+            array_push($data['user']['events'], ['id'=> $evt->getId()]);
+        }
+    }
+    
+    $association = $user->getAssociation();
+    $data['user']['association'] = [];
+    if ($association) {
+        $data['user']['association'] = ['id'=> $association->getId()];
+    }
 
     $event->setData($data);
 }
-
-
 }
