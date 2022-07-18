@@ -1,6 +1,6 @@
-# UDRUGA
+# UDRUGA (Le back)
 
-## Le back 
+## Features
 
 ```text 
 Udruga (qui signifie “association” en croate) est un site permettant à des associations de gérer et d’organiser des évènements.
