@@ -24,12 +24,3 @@ MySql : C’est la base de données utilisée sur ce projet.
 
 ```
 
-## TEAM BACK
-```text
-CHARAF COLO AKA BLACK PANTHER
-EDDY GAVIGNIAUX AKA EDDIE BROCK
-WAHIB JOUIDIR AKA SHANG-CHI
-```
-
-![](back-udruga.png)
-img src: allocine & fandom
