@@ -24,3 +24,4 @@ JWT Token: Il permet l'échange sécurisé de jetons (tokens) entre plusieurs pa
 
 ```
 
+![image](https://user-images.githubusercontent.com/95017891/179490127-ded38323-8e35-40a2-9000-1b72da4499bb.png)
